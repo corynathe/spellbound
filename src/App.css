@@ -1,0 +1,135 @@
+.App {
+  /*text-align: center;*/
+  width: 750px;
+  margin: auto;
+}
+
+/*.App-logo {*/
+/*  height: 40vmin;*/
+/*  pointer-events: none;*/
+/*}*/
+
+/*@media (prefers-reduced-motion: no-preference) {*/
+/*  .App-logo {*/
+/*    animation: App-logo-spin infinite 20s linear;*/
+/*  }*/
+/*}*/
+
+/*.App-header {*/
+/*  background-color: #282c34;*/
+/*  min-height: 100vh;*/
+/*  display: flex;*/
+/*  flex-direction: column;*/
+/*  align-items: center;*/
+/*  justify-content: center;*/
+/*  font-size: calc(10px + 2vmin);*/
+/*  color: white;*/
+/*}*/
+
+/*.App-link {*/
+/*  color: #61dafb;*/
+/*}*/
+
+/*@keyframes App-logo-spin {*/
+/*  from {*/
+/*    transform: rotate(0deg);*/
+/*  }*/
+/*  to {*/
+/*    transform: rotate(360deg);*/
+/*  }*/
+/*}*/
+
+input {
+  margin-bottom: 10px;
+  padding: 10px;
+  width: 400px;
+  font-size: 18px;
+  border-radius: 10px;
+}
+
+.word-remove-icon {
+  padding-left: 10px;
+  font-size: 20px;
+  color: #888888;
+}
+.word-remove-icon:hover {
+  color: #ff0000;
+  cursor: pointer;
+}
+
+.listen-area {
+  display: inline-block;
+  width: 85px;
+}
+.listen-icon {
+  color: #444444;
+  padding-left: 5px;
+  font-size: 25px;
+  cursor: pointer;
+}
+.listen-icon-other {
+  color: #888888;
+}
+
+.user-chip {
+  /*min-height: 100px;*/
+  /*min-width: 50px;*/
+  background-color: #c0c0c0;
+  border-radius: 20px;
+  margin: 10px;
+  padding: 10px;
+  /*text-align: center;*/
+}
+
+.user-chip-name {
+  display: inline-block;
+  font-size: 28px;
+  padding-bottom: 15px;
+}
+.user-chip-edit {
+  display: inline-block;
+  float: right;
+  padding-right: 10px;
+  color: #888888;
+}
+.user-chip-edit:hover {
+  color: #222222;
+  cursor: pointer;
+}
+.user-chip-remove {
+  display: inline-block;
+  float: right;
+  color: #888888;
+}
+.user-chip-remove:hover {
+  color: #ff0000;
+  cursor: pointer;
+}
+.user-list-remove {
+  padding-left: 10px;
+  color: #888888;
+}
+.user-list-remove:hover {
+  color: #ff0000;
+  cursor: pointer;
+}
+
+.button {
+  width: 100px;
+  background-color: mediumseagreen;
+  color: #ffffff;
+  text-align: center;
+  padding: 10px;
+  border: solid black 1px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.answer-correct {
+  color: green;
+  font-size: 25px;
+}
+.answer-wrong {
+  color: red;
+  font-size: 25px;
+}

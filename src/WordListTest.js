@@ -1,0 +1,91 @@
+import React, { useState, useEffect, useCallback, useMemo } from "react";
+import { useParams } from 'react-router-dom';
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faCheckCircle, faCircleMinus, faCircleXmark, faCircleStop} from "@fortawesome/free-solid-svg-icons";
+
+import {ListenButton} from './ListenButton';
+import {
+    DEFINITIONS,
+    getStorageWordList,
+    splitWordListId,
+    userListId,
+    getStorageUsers, playAudio,
+} from "./util";
+
+export function WordListTest() {
+    const { id } = useParams();
+    const [listInfo, setListInfo] = useState();
+    const [answers, setAnswers] = useState([]);
+    const [results, setResults] = useState([]);
+    const { user, listId } = useMemo(() => splitWordListId(id), [id]);
+    const userInfo = useMemo(() => getStorageUsers()[user], [user]);
+    const id_ = userListId(user, listId);
+
+    useEffect(() => {
+        const list = getStorageWordList(id_, true);
+        setListInfo(list);
+    }, [id_]);
+
+    const onWordChange = useCallback((event, index) => {
+        setAnswers((current) => {
+            const newAnswers = [...current];
+            newAnswers[index] = event.target.value;
+            return newAnswers;
+        });
+    }, []);
+
+    const onWordFocus = useCallback((event, index) => {
+        const word = listInfo?.words[index];
+        if (word) {
+            const data = DEFINITIONS[word.toLowerCase()];
+            playAudio(word, data?.audio);
+        }
+    }, [listInfo?.words]);
+
+    const checkAnswers = useCallback(() => {
+        if (!listInfo.words) return;
+
+        setResults(listInfo.words.map((word, i) => {
+            return word.toLowerCase() === answers?.[i]?.toLowerCase();
+        }));
+    }, [answers, listInfo?.words]);
+
+    if (!user) {
+        // TODO add an error page
+        return <div>No list selected. Please go back to Home and select a list.</div>
+    }
+    if (!listInfo) {
+        return <div>Loading...</div>
+    }
+
+    return (
+        <div>
+            <h2>{userInfo?.name}'s List Name</h2>
+            <div>
+                {listInfo.name}
+            </div>
+            <h2>Words</h2>
+            <div>
+                {listInfo.words.map((word, i) => {
+                    return (
+                        <div key={i}>
+                            <input
+                                type="text"
+                                name={`word-${i}`}
+                                value={answers?.[i] ?? ''}
+                                onFocus={(event) => onWordFocus(event, i)}
+                                onChange={(event) => onWordChange(event, i)}
+                                placeholder="Enter word"
+                                tabIndex={i+1}
+                            />
+                            {DEFINITIONS[word?.toLowerCase()] && <ListenButton word={listInfo.words[i]} />}
+                            {results[i] === true && <FontAwesomeIcon className="answer-correct" icon={faCheckCircle} />}
+                            {results[i] === false && <FontAwesomeIcon className="answer-wrong" icon={faCircleXmark} />}
+                        </div>
+                    )
+                })}
+            </div>
+            <div className="button" onClick={checkAnswers}>Check It!</div>
+        </div>
+    );
+}
