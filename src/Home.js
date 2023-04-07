@@ -40,7 +40,7 @@ export function Home() {
     }
 
     return (
-        <div>
+        <div className="page">
             <img src={logo} />
             {userNames.map(user => {
                 const userInfo = users[user];

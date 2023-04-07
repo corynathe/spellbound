@@ -39,6 +39,10 @@
 /*  }*/
 /*}*/
 
+.page {
+  padding-bottom: 50px;
+}
+
 input {
   margin-bottom: 10px;
   padding: 10px;
@@ -115,14 +119,20 @@ input {
 }
 
 .button {
-  width: 100px;
+  min-width: 100px;
+  display: inline-block;
   background-color: mediumseagreen;
   color: #ffffff;
   text-align: center;
   padding: 10px;
+  margin-right: 10px;
   border: solid black 1px;
   border-radius: 10px;
   cursor: pointer;
+}
+.button.secondary {
+  background-color: #ffffff;
+  color: #000000;
 }
 
 .answer-correct {
