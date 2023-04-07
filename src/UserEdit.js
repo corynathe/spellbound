@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useCallback, useMemo } from "react";
-import { useParams, Link } from 'react-router-dom';
+import {useParams, Link, useNavigate} from 'react-router-dom';
 
 import {getDefaultName, getStorageUsers, saveUserName} from "./util";
 
 export function UserEdit() {
     const { id } = useParams();
+    const navigate = useNavigate();
     const [name, setName] = useState();
     const [userInfo, setUserInfo] = useState();
     const [loading, setLoading] = useState(true);
@@ -25,6 +26,20 @@ export function UserEdit() {
         saveUserName(id, name);
     }, [id, name]);
 
+    const onCreateList = useCallback((event) => {
+        if (event?.key === 'Tab' || event?.shiftKey) {
+            return;
+        }
+        navigate(`/wordlist/${id}`);
+    }, [id, navigate]);
+
+    const onHome = useCallback((event) => {
+        if (event?.key === 'Tab' || event?.shiftKey) {
+            return;
+        }
+        navigate('/');
+    }, [navigate]);
+
     if (loading) {
         return <div>Loading...</div>
     }
@@ -34,14 +49,13 @@ export function UserEdit() {
     }
 
     return (
-        <div>
+        <div className="page">
             <h2>User Name</h2>
             <div>
-                <input type="text" value={name ?? initName} onChange={onNameChange} onBlur={onNameBlur} placeholder="Enter your name" />
+                <input type="text" autoFocus value={name ?? initName} onChange={onNameChange} onBlur={onNameBlur} placeholder="Enter your name" />
             </div>
-            <Link to="/">{'< Home'}</Link>
-            &nbsp;&nbsp;&nbsp;
-            <Link to={`/wordlist/${id}`}>Create a New List</Link>
+            <div className="button" onClick={onCreateList} onKeyDown={onCreateList} tabIndex={0}>Create a New List</div>
+            <div className="button secondary" onClick={onHome} onKeyDown={onHome} tabIndex={0}>Home</div>
         </div>
     );
 }

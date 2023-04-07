@@ -40,7 +40,7 @@ export function WordList() {
             const newWords = [...current];
             if (remove) {
                 newWords.splice(index, 1);
-            } else {
+            } else if (index !== undefined) {
                 newWords[index] = word;
             }
             if (save) {
@@ -67,21 +67,45 @@ export function WordList() {
         updateWords(index, value, false, true);
     }, [updateWords]);
 
-    const onAddWord = useCallback((event) => {
-        const value = event.target.value?.trim();
-        if (value !== '') {
+    const onAddWord = useCallback((value) => {
+        if (value.trim() !== '') {
             updateWords(words.length, value, false, true);
-            event.target.value = '';
+            document.getElementsByName('word')[0].value = '';
         }
     }, [updateWords, words]);
+
+    const onNewWordBlur = useCallback((event) => {
+        const value = event.target.value?.trim();
+        onAddWord(value);
+    }, [onAddWord]);
 
     const onRemoveWord = useCallback((index) => {
         updateWords(index, undefined, true, true);
     }, [updateWords]);
 
-    const takeTest = useCallback(() => {
+    const onKeyDown = useCallback((event) => {
+        if (event.keyCode === 9 || event.keyCode === 13) {
+            const value = document.getElementsByName('word')[0].value;
+            if (value.trim().length > 0) {
+                event.preventDefault();
+                onAddWord(value);
+            }
+        }
+    }, [onAddWord]);
+
+    const onTakeTest = useCallback((event) => {
+        if (event?.key === 'Tab' || event?.shiftKey) {
+            return;
+        }
         navigate(`/wordlist/${id_}/test`);
-    }, []);
+    }, [id_, navigate]);
+
+    const onHome = useCallback((event) => {
+        if (event?.key === 'Tab' || event?.shiftKey) {
+            return;
+        }
+        navigate(`/`);
+    }, [navigate]);
 
     if (!user) {
         // TODO add an error page
@@ -92,28 +116,29 @@ export function WordList() {
     }
 
     return (
-        <div>
+        <div className="page">
             <h2>{userInfo?.name}'s List Name</h2>
             <div>
-                <input type="text" value={name} onChange={onNameChange} placeholder="Give the list a name" />
+                <input type="text" autoFocus={name?.length === 0} value={name} onChange={onNameChange} placeholder="Give the list a name" />
             </div>
             <h2>Words</h2>
             <div>
                 {words.map((word, i) => {
                     return (
                         <div key={i}>
-                            <input type="text" name={`word-${i}`} value={word} onChange={onWordChange} onBlur={onWordBlur} placeholder="Add a word" tabIndex={i+1} />
+                            <input type="text" name={`word-${i}`} autoComplete={'off'} value={word} onChange={onWordChange} onBlur={onWordBlur} placeholder="Add a word" />
                             {DEFINITIONS[word?.toLowerCase()] && <ListenButton word={words[i]} />}
                             <FontAwesomeIcon icon={faTrashCan} className="word-remove-icon" onClick={() => onRemoveWord(i)} />
                         </div>
                     )
                 })}
                 <div>
-                    <input type="text" name="word" onBlur={onAddWord} placeholder="Enter a word" tabIndex={words.length+1} />
+                    <input type="text" name="word" autoComplete={'off'} onBlur={onNewWordBlur} onKeyDown={onKeyDown} placeholder="Enter a word" />
                 </div>
             </div>
             <br/>
-            {words.length > 0 && <div className="button" onClick={takeTest}>Test Me!</div>}
+            {words.length > 0 && <div className="button" onClick={onTakeTest} onKeyDown={onTakeTest} tabIndex={0}>Take Test</div>}
+            <div className="button secondary" onClick={onHome} onKeyDown={onHome} tabIndex={0}>Home</div>
         </div>
     );
 }

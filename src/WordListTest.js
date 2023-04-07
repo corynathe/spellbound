@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useMemo } from "react";
-import { useParams } from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faCheckCircle, faCircleMinus, faCircleXmark, faCircleStop} from "@fortawesome/free-solid-svg-icons";
+import {faCheckCircle, faCircleXmark} from "@fortawesome/free-solid-svg-icons";
 
 import {ListenButton} from './ListenButton';
 import {
@@ -14,6 +14,7 @@ import {
 
 export function WordListTest() {
     const { id } = useParams();
+    const navigate = useNavigate();
     const [listInfo, setListInfo] = useState();
     const [answers, setAnswers] = useState([]);
     const [results, setResults] = useState([]);
@@ -50,6 +51,23 @@ export function WordListTest() {
         }));
     }, [answers, listInfo?.words]);
 
+    const onButtonKeyDown = useCallback((event) => {
+        if (event?.key === 'Tab' || event?.shiftKey) {
+            return;
+        }
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            checkAnswers();
+        }
+    }, [checkAnswers]);
+
+    const onDone = useCallback((event) => {
+        if (event?.key === 'Tab' || event?.shiftKey) {
+            return;
+        }
+        navigate(`/wordlist/${id_}`);
+    }, [id_, navigate]);
+
     if (!user) {
         // TODO add an error page
         return <div>No list selected. Please go back to Home and select a list.</div>
@@ -59,7 +77,7 @@ export function WordListTest() {
     }
 
     return (
-        <div>
+        <div className="page">
             <h2>{userInfo?.name}'s List Name</h2>
             <div>
                 {listInfo.name}
@@ -76,7 +94,9 @@ export function WordListTest() {
                                 onFocus={(event) => onWordFocus(event, i)}
                                 onChange={(event) => onWordChange(event, i)}
                                 placeholder="Enter word"
-                                tabIndex={i+1}
+                                autoFocus={i === 0}
+                                spellCheck={false}
+                                autoComplete={'off'}
                             />
                             {DEFINITIONS[word?.toLowerCase()] && <ListenButton word={listInfo.words[i]} />}
                             {results[i] === true && <FontAwesomeIcon className="answer-correct" icon={faCheckCircle} />}
@@ -85,7 +105,8 @@ export function WordListTest() {
                     )
                 })}
             </div>
-            <div className="button" onClick={checkAnswers}>Check It!</div>
+            <div className="button" onClick={checkAnswers} onKeyDown={onButtonKeyDown} tabIndex={0}>Check It!</div>
+            <div className="button secondary" onClick={onDone} onKeyDown={onDone} tabIndex={0}>Done</div>
         </div>
     );
 }
