@@ -3,6 +3,7 @@ import {useNavigate, useParams} from 'react-router-dom';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCheckCircle, faCircleXmark} from "@fortawesome/free-solid-svg-icons";
 
+import {Header} from "./Header";
 import {ListenButton} from './ListenButton';
 import {
     DEFINITIONS,
@@ -78,11 +79,8 @@ export function WordListTest() {
 
     return (
         <div className="page">
-            <h2>{userInfo?.name}'s List Name</h2>
-            <div>
-                {listInfo.name}
-            </div>
-            <h2>Words</h2>
+            <Header title={userInfo?.name}/>
+            <h2>{listInfo.name + ' Words'}</h2>
             <div>
                 {listInfo.words.map((word, i) => {
                     return (

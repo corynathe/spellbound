@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useCallback, useMemo } from "react";
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faTrashCan} from '@fortawesome/free-solid-svg-icons'
 
+import {Header} from "./Header";
 import {ListenButton} from './ListenButton';
 import {
     DEFINITIONS,
@@ -11,7 +12,8 @@ import {
     splitWordListId,
     userListId,
     getDictionaryEntry,
-    getStorageUsers
+    getStorageUsers,
+    playAudio
 } from "./util";
 
 export function WordList() {
@@ -29,11 +31,14 @@ export function WordList() {
         setWords(list.words);
     }, [id_]);
 
-    // TODO on unmount, set wordlist in localStorage, trim and remove blanks
-
-    const updateWords = useCallback(async (index, word, remove, save) => {
-        if (save) {
+    const updateWords = useCallback(async (index, word, remove, save, say = false) => {
+        if (save && !remove) {
             await getDictionaryEntry(word);
+        }
+
+        if (say) {
+            const data = DEFINITIONS[word.toLowerCase()];
+            playAudio(word, data?.audio);
         }
 
         setWords((current) => {
@@ -44,7 +49,12 @@ export function WordList() {
                 newWords[index] = word;
             }
             if (save) {
-                saveStorageWordList(id_, name, newWords);
+                let name_ = name;
+                if (name === undefined || name?.length === 0) {
+                    name_ = (new Date()).toDateString();
+                    setName(name_);
+                }
+                saveStorageWordList(id_, name_, newWords);
             }
             return newWords;
         });
@@ -54,6 +64,12 @@ export function WordList() {
         const value = event.target.value;
         setName(value);
     }, []);
+
+    const onNameBlur = useCallback(() => {
+        if (name?.length > 0) {
+            saveStorageWordList(id_, name, words);
+        }
+    }, [id_, name, words]);
 
     const onWordChange = useCallback((event) => {
         const index = parseInt(event.target.name?.replace('word-', ''), 10);
@@ -67,9 +83,14 @@ export function WordList() {
         updateWords(index, value, false, true);
     }, [updateWords]);
 
+    const onWordFocus = useCallback((event) => {
+        const length = event.target.value.length;
+        event.target.selectionStart = event.target.selectionEnd = length;
+    }, []);
+
     const onAddWord = useCallback((value) => {
         if (value.trim() !== '') {
-            updateWords(words.length, value, false, true);
+            updateWords(words.length, value, false, true, true);
             document.getElementsByName('word')[0].value = '';
         }
     }, [updateWords, words]);
@@ -117,28 +138,29 @@ export function WordList() {
 
     return (
         <div className="page">
-            <h2>{userInfo?.name}'s List Name</h2>
+            <Header title={userInfo?.name} />
+            <h2>List Name</h2>
             <div>
-                <input type="text" autoFocus={name?.length === 0} value={name} onChange={onNameChange} placeholder="Give the list a name" />
+                <input type="text" className="input-full" autoFocus={name?.length === 0} value={name} onChange={onNameChange} onBlur={onNameBlur} placeholder="Give the list a name" />
             </div>
             <h2>Words</h2>
             <div>
                 {words.map((word, i) => {
                     return (
                         <div key={i}>
-                            <input type="text" name={`word-${i}`} autoComplete={'off'} value={word} onChange={onWordChange} onBlur={onWordBlur} placeholder="Add a word" />
+                            <input type="text" name={`word-${i}`} autoComplete={'off'} value={word} onChange={onWordChange} onBlur={onWordBlur} onFocus={onWordFocus} placeholder="Add a word" />
                             {DEFINITIONS[word?.toLowerCase()] && <ListenButton word={words[i]} />}
                             <FontAwesomeIcon icon={faTrashCan} className="word-remove-icon" onClick={() => onRemoveWord(i)} />
                         </div>
                     )
                 })}
                 <div>
-                    <input type="text" name="word" autoComplete={'off'} onBlur={onNewWordBlur} onKeyDown={onKeyDown} placeholder="Enter a word" />
+                    <input type="text" className={words?.length > 0 ? "" : "input-full"} name="word" autoComplete={'off'} onBlur={onNewWordBlur} onKeyDown={onKeyDown} placeholder="Enter a word" />
                 </div>
             </div>
             <br/>
-            {words.length > 0 && <div className="button" onClick={onTakeTest} onKeyDown={onTakeTest} tabIndex={0}>Take Test</div>}
-            <div className="button secondary" onClick={onHome} onKeyDown={onHome} tabIndex={0}>Home</div>
+            {words.length > 0 && <div className="button" onClick={onTakeTest} onKeyDown={onTakeTest} tabIndex={0}>Quiz Me!</div>}
+            <div className="button secondary" onClick={onHome} onKeyDown={onHome} tabIndex={0}>Done</div>
         </div>
     );
 }

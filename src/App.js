@@ -31,23 +31,6 @@ export default function App() {
 function Layout() {
     return (
             <div className="App">
-                <img src={logo} height={50} />
-                <nav>
-                    <ul>
-                        <li>
-                            <Link to="/">Home</Link>
-                        </li>
-                        <li>
-                            <Link to="/dictionary">Dictionary</Link>
-                        </li>
-                        <li>
-                            <Link to="/about">About</Link>
-                        </li>
-                    </ul>
-                </nav>
-
-                <hr />
-
                 {/* An <Outlet> renders whatever child route is currently active,
           so you can think about this <Outlet> as a placeholder for
           the child routes we defined above. */}

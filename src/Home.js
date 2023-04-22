@@ -41,7 +41,7 @@ export function Home() {
 
     return (
         <div className="page">
-            <img src={logo} />
+            <img src={logo} className="logo-center" />
             {userNames.map(user => {
                 const userInfo = users[user];
                 return (
@@ -67,8 +67,7 @@ export function Home() {
                     </div>
                 )
             })}
-            <div className="button" style={{width: '125px'}} onClick={_addUser}>Add a Speller!</div>
-            {/*<FontAwesomeIcon icon={faBasketball} size="3x" style={{padding: 5}} />*/}
+            <div className="button" style={{width: '125px', marginLeft: '10px'}} onClick={_addUser}>Add a Speller!</div>
         </div>
     );
 }

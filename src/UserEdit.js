@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo } from "react";
-import {useParams, Link, useNavigate} from 'react-router-dom';
+import {useParams, useNavigate} from 'react-router-dom';
+import {Header} from "./Header";
 
 import {getDefaultName, getStorageUsers, saveUserName} from "./util";
 
@@ -23,7 +24,9 @@ export function UserEdit() {
     }, []);
 
     const onNameBlur = useCallback(() => {
-        saveUserName(id, name);
+        if (name) {
+            saveUserName(id, name);
+        }
     }, [id, name]);
 
     const onCreateList = useCallback((event) => {
@@ -50,12 +53,12 @@ export function UserEdit() {
 
     return (
         <div className="page">
-            <h2>User Name</h2>
+            <Header title="User Name"/>
             <div>
-                <input type="text" autoFocus value={name ?? initName} onChange={onNameChange} onBlur={onNameBlur} placeholder="Enter your name" />
+                <input type="text" className="input-full" autoFocus value={name ?? initName} onChange={onNameChange} onBlur={onNameBlur} placeholder="Enter your name" />
             </div>
+            <div className="button secondary" onClick={onHome} onKeyDown={onHome} tabIndex={0}>Done</div>
             <div className="button" onClick={onCreateList} onKeyDown={onCreateList} tabIndex={0}>Create a New List</div>
-            <div className="button secondary" onClick={onHome} onKeyDown={onHome} tabIndex={0}>Home</div>
         </div>
     );
 }
