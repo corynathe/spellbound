@@ -33,14 +33,14 @@ export function UserEdit() {
         if (event?.key === 'Tab' || event?.shiftKey) {
             return;
         }
-        navigate(`/wordlist/${id}`);
+        navigate(`/spellbound/wordlist/${id}`);
     }, [id, navigate]);
 
     const onHome = useCallback((event) => {
         if (event?.key === 'Tab' || event?.shiftKey) {
             return;
         }
-        navigate('/');
+        navigate('/spellbound');
     }, [navigate]);
 
     if (loading) {

@@ -12,7 +12,7 @@ export default function App() {
     return (
             <div>
                 <Routes>
-                    <Route path="/" element={<Layout />}>
+                    <Route path="spellbound" element={<Layout />}>
                         <Route index element={<Home />} />
                         <Route path="wordlist" element={<WordList />} />
                         <Route path="wordlist/:id" element={<WordList />} />
@@ -59,7 +59,7 @@ function NoMatch() {
             <div>
                 <h2>Nothing to see here!</h2>
                 <p>
-                    <Link to="/">Go to the home page</Link>
+                    <Link to="/spellbound">Go to the home page</Link>
                 </p>
             </div>
     );

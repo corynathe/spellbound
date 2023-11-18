@@ -66,7 +66,7 @@ export function WordListTest() {
         if (event?.key === 'Tab' || event?.shiftKey) {
             return;
         }
-        navigate(`/wordlist/${id_}`);
+        navigate(`/spellbound/wordlist/${id_}`);
     }, [id_, navigate]);
 
     if (!user) {

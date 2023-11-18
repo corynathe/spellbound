@@ -118,14 +118,14 @@ export function WordList() {
         if (event?.key === 'Tab' || event?.shiftKey) {
             return;
         }
-        navigate(`/wordlist/${id_}/test`);
+        navigate(`/spellbound/wordlist/${id_}/test`);
     }, [id_, navigate]);
 
     const onHome = useCallback((event) => {
         if (event?.key === 'Tab' || event?.shiftKey) {
             return;
         }
-        navigate(`/`);
+        navigate(`/spellbound/`);
     }, [navigate]);
 
     if (!user) {

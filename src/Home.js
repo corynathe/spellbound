@@ -26,7 +26,7 @@ export function Home() {
         setUsers(getStorageUsers());
 
         setTimeout(() => {
-            navigate('/user/' + newUserId);
+            navigate('/spellbound/user/' + newUserId);
         }, 100);
     }, [navigate]);
 
@@ -48,7 +48,7 @@ export function Home() {
                     <div key={user} className="user-chip">
                         <div className="user-chip-name">{userInfo?.name ?? '#' + user}</div>
                         <FontAwesomeIcon icon={faTrashCan} className="user-chip-remove" onClick={() => _removeUser(user)} />
-                        <Link to={`/user/${user}`}>
+                        <Link to={`/spellbound/user/${user}`}>
                             <FontAwesomeIcon icon={faPencil} className="user-chip-edit" />
                         </Link>
                         <br/>
@@ -58,12 +58,12 @@ export function Home() {
 
                             return (
                                 <div key={list}>
-                                    <Link to={`/wordlist/${user}|${list}`}>{wordList.name}</Link>
+                                    <Link to={`/spellbound/wordlist/${user}|${list}`}>{wordList.name}</Link>
                                     <FontAwesomeIcon icon={faTrashCan} className="user-list-remove" onClick={() => removeList(user, list)} />
                                 </div>
                             )
                         })}
-                        <Link to={`/wordlist/${user}`}>Create a New List</Link>
+                        <Link to={`/spellbound/wordlist/${user}`}>Create a New List</Link>
                     </div>
                 )
             })}

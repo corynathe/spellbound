@@ -7,7 +7,7 @@ export function Header(props) {
     const navigate = useNavigate();
 
     const onHome = useCallback(() => {
-        navigate('/');
+        navigate('/spellbound');
     }, [navigate]);
 
     return (
