@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/spellbound/static/css/main.df67f76b.css",
+    "main.js": "/spellbound/static/js/main.3ee54e95.js",
+    "static/media/Canva Design.png": "/spellbound/static/media/Canva Design.820fbab534370ba9fcc4.png",
+    "index.html": "/spellbound/index.html",
+    "main.df67f76b.css.map": "/spellbound/static/css/main.df67f76b.css.map",
+    "main.3ee54e95.js.map": "/spellbound/static/js/main.3ee54e95.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.df67f76b.css",
+    "static/js/main.3ee54e95.js"
+  ]
+}
