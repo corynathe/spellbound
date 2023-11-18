@@ -7,7 +7,6 @@ import { WordList } from './WordList';
 import { WordListTest } from './WordListTest';
 import { UserEdit } from './UserEdit';
 import { DictionaryTest } from './DictionaryTest';
-import logo from "./Canva Design.png";
 
 export default function App() {
     return (

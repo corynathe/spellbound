@@ -101,6 +101,7 @@ input {
   /*min-height: 100px;*/
   /*min-width: 50px;*/
   background-color: #c0c0c0;
+  border: solid 1px #dddddd;
   border-radius: 20px;
   margin: 10px;
   padding: 10px;
